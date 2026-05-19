@@ -6,6 +6,18 @@
     <title>Flask Website</title>
 </head>
 <body>
-    <h1>testing successful</h1>
+
+    <h1>Flower Shop</h1>
+
+    <ul>
+        {% for flower, details in flowers.items() %}
+            <li>
+                {{ flower }} -
+                ${{ details.price }} -
+                Stock: {{ details.stock }}
+            </li>
+        {% endfor %}
+    </ul>
+
 </body>
 </html>
