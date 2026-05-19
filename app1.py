@@ -8,10 +8,8 @@ app.secret_key = 'your secret key'
 
 @app.route('/')
 def index():
-    # flowers = load_data()
     return render_template('index.html')
-    # return render_template('index.html', flowers=flowers)
-
+ 
 @app.route('/about')
 def about():
     return render_template('about.html')
