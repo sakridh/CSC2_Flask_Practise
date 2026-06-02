@@ -35,7 +35,7 @@
 <h2>Your Cart</h2>
 {% if cart %}
     <ul>
-        {% for item, details in cart.items() %}
+        {% for item, detaxils in cart.items() %}
             <li>{{ item }}: {{ '%.2f' % details['quantity'] }} x ${{ details['price'] }}
                 = ${{ details['quantity'] * details['price'] }}
                 <a href="{{ url_for('remove_from_cart', item=item) }}">[Remove]</a>
