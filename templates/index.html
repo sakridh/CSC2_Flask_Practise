@@ -3,47 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask Website</title>
+    <title>Flower Shop</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 650px; margin: 40px auto; }
+        fieldset { margin-bottom: 16px; padding: 12px; }
+        ul { list-style: disc; padding-left: 20px; }
+        .flashes { color: green; list-style: none; padding: 0; }
+        .subtotal { color: #555; font-size: 0.95em; }
+        h4 { border-top: 1px solid #ccc; padding-top: 8px; }
+    </style>
 </head>
 <body>
+<h1>Flower Shop</h1>
 
-    <h1>Flower Shop</h1>
-
-<form action="{{ url_for('add_to_cart' )}}" method="post">
+<!-- Flower selection form -->
+<form action="{{ url_for('add_to_cart') }}" method="post">
     <fieldset>
-        <legend for="flower">Select, Flowers</legend>
+        <legend>Select Flowers</legend>
         <select name="flower" id="flower">
             {% for flower, details in flowers.items() %}
-            <option value="{{ flower }}">{{flower}} - ${{ details['price'] }}</option>
+            <option value="{{ flower }}">{{ flower }} - ${{ details['price'] }}</option>
             {% endfor %}
         </select>
         <label for="quantity">Quantity</label>
-        <input type="number" name="quantity" value="1" min="1">
+        <input type="number" id="quantity" name="quantity" value="1" min="1">
         <button type="submit">Add to cart</button>
     </fieldset>
 </form>
+
+<!-- Flash messages -->
 {% with messages = get_flashed_messages() %}
     {% if messages %}
-        <ul class="flashes">
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
+    <ul class="flashes">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
     {% endif %}
 {% endwith %}
 
-<h2>Your Cart</h2>
-{% if cart %}
+<!-- Add-ons form -->
+<form action="{{ url_for('select_addon') }}" method="post">
+    <fieldset>
+        <legend>Add-ons</legend>
+        {% for addon, data in addons.items() %}
+        <label>
+            <input type="checkbox" name="addons" value="{{ addon }}">
+            {{ addon }} (${{ data.price }})
+        </label><br>
+        {% endfor %}
+        <button type="submit">Add to cart</button>
+    </fieldset>
+</form>
+
+<!-- Cart + checkout form -->
+<fieldset>
+    <legend>Your Cart</legend>
+
+    <!-- Flower items -->
+    {% if cart %}
     <ul>
-        {% for item, detaxils in cart.items() %}
-            <li>{{ item }}: {{ '%.2f' % details['quantity'] }} x ${{ details['price'] }}
-                = ${{ details['quantity'] * details['price'] }}
-                <a href="{{ url_for('remove_from_cart', item=item) }}">[Remove]</a>
-            </li>
+        {% for item, details in cart.items() %}
+        <li>
+            {{ item }}: {{ details['quantity'] }} x ${{ details['price'] }}
+            = ${{ '%.2f' % (details['quantity'] * details['price']) }}
+            <a href="{{ url_for('remove_from_cart', item=item) }}">[Remove]</a>
+        </li>
         {% endfor %}
     </ul>
-{% else %}
+    <p class="subtotal">Flower Subtotal: ${{ '%.2f' % flower_subtotal }}</p>
+    {% else %}
     <p>Your cart is empty</p>
-{% endif %}
+    {% endif %}
+
+    <!-- Add-on items -->
+    {% if selected_addons %}
+    <ul>
+        {% for addon, price in selected_addons.items() %}
+        <li>{{ addon }} - ${{ '%.2f' % price }}</li>
+        {% endfor %}
+    </ul>
+    <p class="subtotal">Add-ons Subtotal: ${{ '%.2f' % addon_subtotal }}</p>
+    {% endif %}
+
+    <h4>Total: ${{ '%.2f' % total }}</h4>
+
+    <!-- Checkout form — Cancel Order uses formaction to go to a different route -->
+    <form action="{{ url_for('checkout') }}" method="post">
+        <label for="customer_name_checkout">Your Name:</label><br>
+        <input type="text" name="customer_name" id="customer_name_checkout" required><br><br>
+        <button type="submit">Checkout</button>
+        <button type="submit"
+                formaction="{{ url_for('cancel_order') }}"
+                onclick="return confirm('Are you sure you want to cancel your order?');">
+            Cancel Order
+        </button>
+    </form>
+</fieldset>
+
 </body>
 </html>

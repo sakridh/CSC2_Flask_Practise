@@ -1,14 +1,7 @@
-[
-  {
-    "name": "Teddy Bear",
-    "price": 15
-  },
-  {
-    "name": "Greeting Card",
-    "price": 3
-  },
-  {
-    "name": "Balloon Pack",
-    "price": 7
-  }
-]
+{
+    "Ribbon": { "price": 2 },
+    "Specialty Wrapping Paper": { "price": 5 },
+    "Personalised Note": { "price": 3 },
+    "Delivery": { "price": 10 },
+    "Chocolates": { "price": 8 }
+}

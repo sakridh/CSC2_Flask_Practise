@@ -1,21 +1,7 @@
 {
-    "Rose": {
-        "price": 10,
-        "stock": 50
-    },
-
-    "Tulip": {
-        "price": 8,
-        "stock": 40
-    },
-
-    "Daisy": {
-        "price": 6,
-        "stock": 30
-    },
-
-    "Lily": {
-        "price": 12,
-        "stock": 20
-    }
+    "Rose": { "price": 11, "stock": 50 },
+    "Tulip": { "price": 7, "stock": 40 },
+    "Daisy": { "price": 5, "stock": 30 },
+    "Lily": { "price": 12, "stock": 20 },
+    "Orchid": { "price": 20, "stock": 15 }
 }
